@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask import escape
+#from flask import escape
+from markupsafe import escape
 from datetime import datetime
 import uuid
 
