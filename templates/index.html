@@ -1,27 +1,3 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    <title>StinPaste</title>
-</head>
-<body>
-    <h1>Submit a new Paste</h1>
-    <form method="post">
-        <input type="text" name="title" placeholder="Title" required><br>
-        <textarea name="content" placeholder="Paste your content here" required></textarea><br>
-        <button type="submit">Submit</button>
-    </form>
-    <h2>Recent Pastes:</h2>
-    {% for paste in pastes %}
-    <div>
-        <h3><a href="{{ url_for('view_paste', paste_uuid=paste.uuid) }}">{{ paste.title }}</a> - Posted at {{ paste.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</h3>
-        <pre>{{ paste.content[:100] }}{% if paste.content|length > 100 %}...{% endif %}</pre>
-    </div>
-    {% endfor %}
-</body>
-</html>
- -->
-
-
  <!DOCTYPE html>
  <html lang="en">
  <head>
