@@ -24,6 +24,7 @@ class Paste(db.Model):
 
 with app.app_context():
     db.create_all()
+    # test
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
