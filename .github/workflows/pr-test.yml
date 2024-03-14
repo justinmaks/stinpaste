@@ -1,0 +1,35 @@
+name: Flask PR Test
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Ensures history for all branches is fetched
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'  # Specify the Python version
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Test Flask application
+      run: |
+        # Assuming you have a script/command to test your Flask application
+        # For example, using pytest:
+        # pytest
+        
+        # If you're simply checking if Flask runs
+        flask run &
+        sleep 5
+        kill $!
