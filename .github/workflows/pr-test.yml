@@ -26,8 +26,8 @@ jobs:
     - name: Test Flask application
       run: |
         # Assuming you have a script/command to test your Flask application
-        # For example, using pytest:
-        # pytest
+
+        pytest
         
         # If you're simply checking if Flask runs
         flask run &
