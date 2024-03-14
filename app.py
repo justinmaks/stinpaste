@@ -46,3 +46,12 @@ def view_paste(paste_uuid):
     paste = Paste.query.filter_by(uuid=paste_uuid).first_or_404()
     return render_template('paste.html', paste=paste)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    # e = error object
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    # e is the error object
+    return render_template('500.html'), 500
