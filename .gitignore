@@ -6,6 +6,19 @@ __pycache__/
 # C extensions
 *.so
 
+# VS Code directories and files
+.vscode/
+*.code-workspace
+
+# User-specific VS Code settings
+.settings/
+
+# Local History for Visual Studio Code
+.history/
+
+
+
+
 # Distribution / packaging
 .Python
 build/
