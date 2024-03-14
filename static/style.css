@@ -1,0 +1,67 @@
+/* Contents of style.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.container {
+    width: 80%;
+    margin-top: 20px;
+}
+h1, h2 {
+    color: #0d6efd;
+}
+form {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 5px;
+}
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: none;
+    box-sizing: border-box;
+}
+button {
+    background-color: #0d6efd;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+button:hover {
+    background-color: #0b5ed7;
+}
+.paste {
+    background-color: #1e1e1e;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+.paste h3 {
+    color: #adff2f;
+    margin-bottom: 5px;
+}
+.paste pre {
+    background-color: #262626;
+    padding: 10px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}

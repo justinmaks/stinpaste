@@ -1,0 +1,30 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>{{ paste.title }}</title>
+</head>
+<body>
+    <h1>{{ paste.title }}</h1>
+    <pre>{{ paste.content }}</pre>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ paste.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ paste.title }}</h1>
+        <div class="paste">
+            <pre>{{ paste.content }}</pre>
+            <a href="{{ url_for('index') }}">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
