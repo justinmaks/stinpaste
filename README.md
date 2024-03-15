@@ -15,6 +15,7 @@ pip3 install -r requirements.txt
 ## TODO 
 expiration for pastes, tests, allow weekly,monthly, test scheduler for exp deletes
 password/encryption for pastes - semi done, test more. 
+toggle switch for encrypt toggle, currently a checkbox
 CSP headers
 add accessor-IP to logs
 systemd unit
