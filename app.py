@@ -55,7 +55,7 @@ with app.app_context():
     db.create_all()
 
 def generate_key(password):
-    # Use a constant salt; in a real application, you'd want this to be static but unique per user or encryption
+    # Use a constant salt; in a real app, make this to be static but unique per user or encryption
     salt = b'some_constant_salt'  # Make sure to use the same salt for encryption and decryption
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
@@ -125,7 +125,7 @@ def decrypt_content(content, password):
         fernet = Fernet(key)
         return fernet.decrypt(content.encode()).decode()
     except Exception as e:
-        app.logger.error('Decryption failed: %s', e)
+        app.logger.error(f'Decryption failed: {str(e)}')
         return None
 
 
