@@ -12,7 +12,7 @@ pip3 install -r requirements.txt
 
 `export GOOGLE_ANALYTICS_ID='G-XXXXXX'`
 
-## TODO 
+### TODO 
 
 - expiration for pastes[done], tests, allow weekly,monthly, test scheduler for exp deletes
 - password/encryption for pastes - semi done, test more. 
