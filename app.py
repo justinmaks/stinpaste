@@ -8,7 +8,6 @@ import logging
 from logging.handlers import RotatingFileHandler
 from werkzeug.security import generate_password_hash, check_password_hash
 from cryptography.fernet import Fernet
-
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -123,10 +122,12 @@ def decrypt_content(content, password):
     try:
         key = generate_key(password)
         fernet = Fernet(key)
-        return fernet.decrypt(content.encode()).decode()
+        decrypted = fernet.decrypt(content.encode()).decode()
+        return decrypted
     except Exception as e:
-        app.logger.error(f'Decryption failed: {str(e)}')
+        app.logger.error(f'Decryption failed: {e.__class__.__name__} - {str(e)}')
         return None
+
 
 
 @app.route('/decrypt/<paste_uuid>', methods=['POST'])
