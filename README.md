@@ -1,11 +1,19 @@
 # stinpaste
-pastebin clone
+
+Pastebin clone-ish in Flask
 
 
-# TODO 
-expiration for pastes
-password/encryption for pastes
+## required env vars
+
+`export GOOGLE_ANALYTICS_ID='G-XXXXXX'`
+
+## TODO 
+expiration for pastes, tests, allow weekly,monthly, test scheduler for exp deletes
+password/encryption for pastes - semi done, test more. 
 CSP headers
-
-
-export GOOGLE_ANALYTICS_ID='G-XXXXXX'
+seperate/organize files to:
+app/
+  __init__.py
+  models.py
+  views.py
+  scheduler.py
