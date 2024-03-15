@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, flash, session 
 from flask_sqlalchemy import SQLAlchemy
 from markupsafe import escape
-from datetime import datetime
 import uuid
 import os
 import logging
@@ -12,13 +11,15 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from base64 import urlsafe_b64encode, urlsafe_b64decode
-import os
-
+from datetime import datetime, timedelta
+from sqlalchemy import or_
+from flask_apscheduler import APScheduler
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SUPERSECRETKEY123@@#' #should be secure env var. keep the same to retain sessions. 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pastes.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#app.config['SCHEDULER_API_ENABLED'] = True
 db = SQLAlchemy(app)
 
 # log setup
@@ -39,6 +40,7 @@ class Paste(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     is_encrypted = db.Column(db.Boolean, default=False, nullable=False)
     encryption_key = db.Column(db.String(128))  # Storing a hashed password
+    expires_at = db.Column(db.DateTime, nullable=True) 
 
     def set_password(self, password):
         self.encryption_key = generate_password_hash(password)
@@ -52,6 +54,20 @@ class Paste(db.Model):
 
 with app.app_context():
     db.create_all()
+
+scheduler = APScheduler()
+scheduler.init_app(app)
+app.config['SCHEDULER_API_ENABLED'] = True
+
+@scheduler.task('interval', id='delete_expired_pastes', seconds=3600, misfire_grace_time=900)
+def delete_expired_pastes():
+    with app.app_context():
+        now = datetime.utcnow()
+        expired_pastes = Paste.query.filter(Paste.expires_at <= now).all()
+        for paste in expired_pastes:
+            db.session.delete(paste)
+        db.session.commit()
+        app.logger.info("Deleted expired pastes.")
 
 def generate_key(password):
     # Use a constant salt; in a real app, make this to be static but unique per user or encryption
@@ -78,20 +94,28 @@ def index():
         paste_content = escape(request.form['content'])
         encrypt = request.form.get('encrypt')
         password = request.form.get('password')
+        expiration_hours = int(request.form.get('expiration', 0))
+        expires_at = None
+        if expiration_hours > 0:
+            expires_at = datetime.utcnow() + timedelta(hours=expiration_hours)
+        
         if encrypt == 'on' and password:  # Ensure 'encrypt' checkbox is checked and password is provided
             paste_content = encrypt_content(paste_content, password)
-            new_paste = Paste(title=paste_title, content=paste_content, is_encrypted=True)
+            new_paste = Paste(title=paste_title, content=paste_content, is_encrypted=True, expires_at=expires_at)
             new_paste.set_password(password)
         else:
-            new_paste = Paste(title=paste_title, content=paste_content)
+            new_paste = Paste(title=paste_title, content=paste_content, expires_at=expires_at)
         db.session.add(new_paste)
         db.session.commit()
         app.logger.info(f'New paste created with UUID: {new_paste.uuid}')
         return redirect(url_for('view_paste', paste_uuid=new_paste.uuid))
     
-    # Handle GET request here by fetching existing pastes and rendering index.html
-    pastes = Paste.query.order_by(Paste.timestamp.desc()).all()
+    # Use or_() to combine the conditions properly
+    pastes = Paste.query.filter(or_(Paste.expires_at > datetime.utcnow(), Paste.expires_at.is_(None))
+    ).order_by(Paste.timestamp.desc()).all()
+    
     return render_template('index.html', pastes=pastes)
+
 
 
 @app.route('/p/<paste_uuid>')
@@ -156,3 +180,6 @@ def decrypt_paste(paste_uuid):
 def inject_google_analytics_id():
     return dict(google_analytics_id=os.getenv('GOOGLE_ANALYTICS_ID', ''))
 
+if __name__ == "__main__":
+    scheduler.start()  # Start the scheduler after defining jobs
+    app.run(debug=True)

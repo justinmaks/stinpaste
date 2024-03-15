@@ -24,13 +24,26 @@
         <div id="password" style="display: none;">
             <input type="password" name="password" placeholder="Encryption Password">
         </div>
+        <div>
+            <label for="expiration">Expiration (hours):</label>
+            <select name="expiration" id="expiration">
+                <option value="0">Never</option>
+                {% for i in range(1, 25) %}
+                <option value="{{ i }}">{{ i }} hour{{ 's' if i > 1 else '' }}</option>
+                {% endfor %}
+            </select>
+        </div>
         <button type="submit">Submit</button>
     </form>
     <h2>Recent Pastes:</h2>
     {% for paste in pastes %}
     <div class="paste">
         <h3><a href="{{ url_for('view_paste', paste_uuid=paste.uuid) }}">{{ paste.title }}</a> - Posted at {{ paste.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</h3>
+        {% if paste.is_encrypted %}
+        <pre><Encrypted content></pre>
+        {% else %}
         <pre>{{ paste.content[:100] }}{% if paste.content|length > 100 %}...{% endif %}</pre>
+        {% endif %}
     </div>
     {% endfor %}
 {% endblock %}

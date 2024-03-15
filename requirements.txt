@@ -1,9 +1,11 @@
+APScheduler==3.10.4
 blinker==1.7.0
 cffi==1.16.0
 click==8.1.7
 cryptography==42.0.5
 exceptiongroup==1.2.0
 Flask==3.0.2
+Flask-APScheduler==1.13.1
 Flask-SQLAlchemy==3.1.1
 Flask-Testing==0.8.1
 greenlet==3.0.3
@@ -15,7 +17,11 @@ packaging==24.0
 pluggy==1.4.0
 pycparser==2.21
 pytest==8.1.1
+python-dateutil==2.9.0.post0
+pytz==2024.1
+six==1.16.0
 SQLAlchemy==2.0.28
 tomli==2.0.1
 typing_extensions==4.10.0
+tzlocal==5.2
 Werkzeug==3.0.1

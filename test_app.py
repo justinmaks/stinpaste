@@ -77,13 +77,6 @@ def test_paste_encryption(client):
         decrypted_content = decrypt_content(paste.content, password)
         assert decrypted_content == test_content, "Decryption of the paste content failed."
 
-
-
-
-#### old tests
-
-
-
 def test_index_get(client):
     """Test retrieving the index page."""
     response = client.get('/')
