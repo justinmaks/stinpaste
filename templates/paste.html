@@ -8,8 +8,26 @@
 <body>
     <div class="container">
         <h1>{{ paste.title }}</h1>
+
+        <!-- Flash messages section -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
         <div class="paste">
-            <pre>{{ paste.content }}</pre>
+            {% if encrypted %}
+                <p>&lt;Encrypted Contents&gt;</p>
+                <form action="{{ url_for('decrypt_paste', paste_uuid=paste.uuid) }}" method="post">
+                    <input type="password" name="password" placeholder="Enter password to decrypt" required>
+                    <button type="submit">Decrypt</button>
+                </form>
+            {% else %}
+                <pre>{{ content if content is defined else paste.content }}</pre>
+            {% endif %}
             <a href="{{ url_for('index') }}">Back to Home</a>
         </div>
     </div>

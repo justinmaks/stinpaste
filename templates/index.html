@@ -1,28 +1,40 @@
- <!DOCTYPE html>
- <html lang="en">
- <head>
-     <meta charset="UTF-8">
-     <title>StinPaste</title>
-     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
- </head>
- <body>
-     <div class="container">
-         <h1>Submit a new Paste</h1>
-         <form method="post">
-             <input type="text" name="title" placeholder="Title" required>
-             <textarea name="content" placeholder="Paste your content here" required></textarea>
-             <button type="submit">Submit</button>
-         </form>
-         <h2>Recent Pastes:</h2>
-         {% for paste in pastes %}
-         <div class="paste">
-             <h3><a href="{{ url_for('view_paste', paste_uuid=paste.uuid) }}">{{ paste.title }}</a> - Posted at {{ paste.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</h3>
-             <pre>{{ paste.content[:100] }}{% if paste.content|length > 100 %}...{% endif %}</pre>
-         </div>
-         {% endfor %}
-     </div>
- </body>
- </html>
- 
-
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>StinPaste</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        window.onload = function() {
+            // Toggle the visibility of the password field based on the encrypt checkbox
+            document.getElementById('encrypt').onchange = function() {
+                document.getElementById('password').style.display = this.checked ? 'block' : 'none';
+            };
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Submit a new Paste</h1>
+        <form method="post">
+            <input type="text" name="title" placeholder="Title" required>
+            <textarea name="content" placeholder="Paste your content here" required></textarea>
+            <div>
+                <input type="checkbox" id="encrypt" name="encrypt">
+                <label for="encrypt">Encrypt this paste</label>
+            </div>
+            <div id="password" style="display: none;">
+                <input type="password" name="password" placeholder="Encryption Password">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <h2>Recent Pastes:</h2>
+        {% for paste in pastes %}
+        <div class="paste">
+            <h3><a href="{{ url_for('view_paste', paste_uuid=paste.uuid) }}">{{ paste.title }}</a> - Posted at {{ paste.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</h3>
+            <pre>{{ paste.content[:100] }}{% if paste.content|length > 100 %}...{% endif %}</pre>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
