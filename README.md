@@ -2,6 +2,8 @@
 
 Pastebin clone-ish in Flask
 
+DEMO: https://devmaks.biz/
+
 
 ## required env
 ```
