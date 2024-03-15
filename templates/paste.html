@@ -1,35 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ paste.title }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>{{ paste.title }}</h1>
+{% extends "base.html" %}
 
-        <!-- Flash messages section -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        
-        <div class="paste">
-            {% if encrypted %}
-                <p>&lt;Encrypted Contents&gt;</p>
-                <form action="{{ url_for('decrypt_paste', paste_uuid=paste.uuid) }}" method="post">
-                    <input type="password" name="password" placeholder="Enter password to decrypt" required>
-                    <button type="submit">Decrypt</button>
-                </form>
-            {% else %}
-                <pre>{{ content if content is defined else paste.content }}</pre>
-            {% endif %}
-            <a href="{{ url_for('index') }}">Back to Home</a>
-        </div>
+{% block title %}{{ paste.title }}{% endblock %}
+
+{% block body %}
+    <h1>{{ paste.title }}</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="paste">
+        {% if encrypted %}
+            <p>&lt;Encrypted Contents&gt;</p>
+            <form action="{{ url_for('decrypt_paste', paste_uuid=paste.uuid) }}" method="post">
+                <input type="password" name="password" placeholder="Enter password to decrypt" required>
+                <button type="submit">Decrypt</button>
+            </form>
+        {% else %}
+            <pre>{{ content if content is defined else paste.content }}</pre>
+        {% endif %}
+        <a href="{{ url_for('index') }}">Back to Home</a>
     </div>
-</body>
-</html>
+{% endblock %}
