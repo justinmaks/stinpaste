@@ -81,7 +81,7 @@ def test_index_get(client):
     """Test retrieving the index page."""
     response = client.get('/')
     assert response.status_code == 200
-    assert b'Submit a new Paste' in response.data  # Adjust based on your index.html content
+    assert b'Create a new Paste' in response.data  # Adjust based on your index.html content
 
 def test_create_paste(client):
     with app.app_context():
