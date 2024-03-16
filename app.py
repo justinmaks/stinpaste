@@ -141,13 +141,17 @@ def view_paste(paste_uuid):
 
 @app.errorhandler(404)
 def page_not_found(e):
-    app.logger.warning('404 error encountered', exc_info=False)
+    visitor_ip = request.headers.get('CF-Connecting-IP', request.remote_addr)
+    app.logger.warning('404 error encountered, IP: %s, URL: %s', visitor_ip, request.url)
     return render_template('404.html'), 404
+
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    app.logger.error('500 internal server error encountered', exc_info=True)
+    visitor_ip = request.headers.get('CF-Connecting-IP', request.remote_addr)
+    app.logger.error('500 internal server error encountered, IP: %s, URL: %s', visitor_ip, request.url, exc_info=True)
     return render_template('500.html'), 500
+
 
 def decrypt_content(content, password):
     try:
