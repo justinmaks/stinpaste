@@ -41,6 +41,7 @@ class Paste(db.Model):
     is_encrypted = db.Column(db.Boolean, default=False, nullable=False)
     encryption_key = db.Column(db.String(128))  # Storing a hashed password
     expires_at = db.Column(db.DateTime, nullable=True) 
+    visitor_ip = db.Column(db.String(45), nullable=True) # ipv6 can be up to 46 char
 
     def set_password(self, password):
         self.encryption_key = generate_password_hash(password)
@@ -99,19 +100,22 @@ def index():
         password = request.form.get('password')
         expiration_hours = int(request.form.get('expiration', 0))
         expires_at = None
+        visitor_ip = request.headers.get('CF-Connecting-IP', request.remote_addr)  # Capture visitor IP
+        
         if expiration_hours > 0:
             expires_at = datetime.utcnow() + timedelta(hours=expiration_hours)
         
         if encrypt == 'on' and password:  # Ensure 'encrypt' checkbox is checked and password is provided
             paste_content = encrypt_content(paste_content, password)
-            new_paste = Paste(title=paste_title, content=paste_content, is_encrypted=True, expires_at=expires_at)
+            new_paste = Paste(title=paste_title, content=paste_content, is_encrypted=True, expires_at=expires_at, visitor_ip=visitor_ip)
             new_paste.set_password(password)
         else:
-            new_paste = Paste(title=paste_title, content=paste_content, expires_at=expires_at)
+            new_paste = Paste(title=paste_title, content=paste_content, expires_at=expires_at, visitor_ip=visitor_ip)
         db.session.add(new_paste)
         db.session.commit()
         app.logger.info(f'New paste created with UUID: {new_paste.uuid}, IP: {visitor_ip}')
         return redirect(url_for('view_paste', paste_uuid=new_paste.uuid))
+
     
     # Use or_() to combine the conditions properly
 
