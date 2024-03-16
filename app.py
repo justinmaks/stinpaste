@@ -107,7 +107,8 @@ def index():
             new_paste = Paste(title=paste_title, content=paste_content, expires_at=expires_at)
         db.session.add(new_paste)
         db.session.commit()
-        app.logger.info(f'New paste created with UUID: {new_paste.uuid}')
+        visitor_ip = request.headers.get('CF-Connecting-IP', request.remote_addr)
+        app.logger.info(f'New paste created with UUID: {new_paste.uuid}, IP: {visitor_ip}')
         return redirect(url_for('view_paste', paste_uuid=new_paste.uuid))
     
     # Use or_() to combine the conditions properly
@@ -124,10 +125,12 @@ def view_paste(paste_uuid):
         paste = Paste.query.filter_by(uuid=paste_uuid).first_or_404()
         decrypted_content = session.pop('decrypted_content', None)  # Retrieve and remove decrypted content from session
         encrypted = paste.is_encrypted and decrypted_content is None
-        app.logger.info('Paste viewed with UUID: %s', paste_uuid)
+        visitor_ip = request.headers.get('CF-Connecting-IP', request.remote_addr)
+        app.logger.info('Paste viewed with UUID: %s, IP: %s', paste_uuid, visitor_ip)
         return render_template('paste.html', paste=paste, content=decrypted_content if decrypted_content else paste.content, encrypted=encrypted)
     except Exception as e:
-        app.logger.error('Error viewing paste with UUID: %s', paste_uuid, exc_info=True)
+        visitor_ip = request.headers.get('CF-Connecting-IP', request.remote_addr)
+        app.logger.error('Error viewing paste with UUID: %s, IP: %s', paste_uuid, visitor_ip, exc_info=True)
         raise e
 
 
