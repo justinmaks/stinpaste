@@ -20,6 +20,7 @@ export GOOGLE_ANALYTICS_ID='G-XXXXXX'
 - toggle switch for encrypt toggle, currently a checkbox
 - CSP headers
 - systemd unit
+- sqlite -> postgres
 - icons/favicons/styling
 - seperate/organize files to:
 ```
