@@ -15,11 +15,9 @@ export GOOGLE_ANALYTICS_ID='G-XXXXXX'
 
 ### TODO 
 
-- expiration for pastes[done], tests, allow weekly,monthly, test scheduler for exp deletes
-- password/encryption for pastes - semi done, test more. 
+- expiration - tests, allow weekly,monthly
 - toggle switch for encrypt toggle, currently a checkbox
 - CSP headers
-- add accessor-IP to logs
 - systemd unit
 - icons/favicons/styling
 - seperate/organize files to:
