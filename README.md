@@ -20,7 +20,7 @@ pip3 install -r requirements.txt
 - CSP headers
 - systemd unit
 - sqlite -> postgres
-- icons/favicons/styling
+- styling
 - seperate/organize files to:
 ```
   app/
