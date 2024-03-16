@@ -26,7 +26,7 @@ db = SQLAlchemy(app)
 
 if not os.path.exists('logs'):
     os.mkdir('logs')
-file_handler = RotatingFileHandler('logs/app.log', maxBytes=10240, backupCount=10)
+file_handler = RotatingFileHandler('logs/app.log', maxBytes=10485760, backupCount=10)
 file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
 app.logger.addHandler(file_handler)
 app.logger.setLevel(logging.INFO)
