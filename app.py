@@ -89,6 +89,9 @@ def encrypt_content(content, password):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+
+    visitor_ip = request.headers.get('CF-Connecting-IP', request.remote_addr)
+
     if request.method == 'POST':
         paste_title = escape(request.form['title'])
         paste_content = escape(request.form['content'])
@@ -107,11 +110,12 @@ def index():
             new_paste = Paste(title=paste_title, content=paste_content, expires_at=expires_at)
         db.session.add(new_paste)
         db.session.commit()
-        visitor_ip = request.headers.get('CF-Connecting-IP', request.remote_addr)
         app.logger.info(f'New paste created with UUID: {new_paste.uuid}, IP: {visitor_ip}')
         return redirect(url_for('view_paste', paste_uuid=new_paste.uuid))
     
     # Use or_() to combine the conditions properly
+
+    app.logger.info(f'Main page accessed, IP: {visitor_ip}')
     pastes = Paste.query.filter(or_(Paste.expires_at > datetime.utcnow(), Paste.expires_at.is_(None))
     ).order_by(Paste.timestamp.desc()).all()
     
