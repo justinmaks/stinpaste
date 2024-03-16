@@ -16,6 +16,7 @@ export GOOGLE_ANALYTICS_ID='G-XXXXXX'
 ### TODO 
 
 - expiration - tests, allow weekly,monthly
+- encryption - unique salt per user. store key per user indb
 - toggle switch for encrypt toggle, currently a checkbox
 - CSP headers
 - systemd unit
