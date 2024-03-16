@@ -190,10 +190,10 @@ def decrypt_paste(paste_uuid):
         flash('An error occurred while decrypting the paste.', 'error')
     return redirect(url_for('view_paste', paste_uuid=paste_uuid))
 
-# DRY!!!
-@app.context_processor
-def inject_google_analytics_id():
-    return dict(google_analytics_id=os.getenv('GOOGLE_ANALYTICS_ID', ''))
+# # DRY!!!
+# @app.context_processor
+# def inject_google_analytics_id():
+#     return dict(google_analytics_id=os.getenv('GOOGLE_ANALYTICS_ID', ''))
 
 if __name__ == "__main__":
     scheduler.start()  # Start the scheduler after defining jobs
