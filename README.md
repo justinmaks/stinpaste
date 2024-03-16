@@ -10,7 +10,6 @@ DEMO: https://devmaks.biz/
 python3 -m venv env
 source env/bin/activate
 pip3 install -r requirements.txt
-export GOOGLE_ANALYTICS_ID='G-XXXXXX'
 ```
 
 ### TODO 
